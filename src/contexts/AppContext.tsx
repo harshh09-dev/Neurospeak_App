@@ -34,6 +34,10 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   }, [isDarkMode]);
 
   useEffect(() => {
+    document.documentElement.classList.toggle("high-contrast", highContrast);
+  }, [highContrast]);
+
+  useEffect(() => {
     document.documentElement.style.fontSize =
       textSize === "extra-large" ? "20px" : textSize === "large" ? "18px" : "16px";
   }, [textSize]);

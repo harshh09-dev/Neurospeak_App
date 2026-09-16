@@ -6,7 +6,7 @@ import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { AppProvider } from "@/contexts/AppContext";
 import { NotificationProvider } from "@/contexts/NotificationContext";
 import NotificationToast from "@/components/NotificationToast";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import SplashScreen from "./pages/SplashScreen";
 import Landing from "./pages/Landing";
 import RoleSelect from "./pages/RoleSelect";
@@ -49,10 +49,11 @@ const pageTransition = {
 
 const AnimatedRoutes = () => {
   const location = useLocation();
+  const reduceMotion = useReducedMotion();
 
   return (
     <AnimatePresence mode="wait">
-      <motion.div key={location.pathname} {...pageTransition} className="min-h-screen">
+      <motion.div key={location.pathname} {...(reduceMotion ? { initial: false } : pageTransition)} className="min-h-0">
         <Routes location={location}>
           <Route path="/" element={<SplashScreen />} />
           <Route path="/landing" element={<Landing />} />
@@ -71,7 +72,7 @@ const AnimatedRoutes = () => {
           <Route path="/user" element={<UserHome />} />
           <Route path="/user/communicate" element={<CommunicationBoard />} />
           <Route path="/user/custom-phrases" element={<CustomPhraseBuilder />} />
-          <Route path="/user/chat" element={<ChatScreen />} />
+          <Route path="/user/chat" element={<ChatScreen role="user" />} />
           <Route path="/user/voice" element={<VoiceOutput />} />
           <Route path="/user/tracking" element={<UserTracking />} />
           <Route path="/user/alerts" element={<AlertsScreen role="user" />} />
@@ -86,7 +87,7 @@ const AnimatedRoutes = () => {
           <Route path="/caregiver/tracking" element={<CaregiverTracking />} />
           <Route path="/caregiver/analysis" element={<AIAnalysis />} />
           <Route path="/caregiver/emotions" element={<EmotionDashboard />} />
-          <Route path="/caregiver/chat" element={<ChatScreen />} />
+          <Route path="/caregiver/chat" element={<ChatScreen role="caregiver" />} />
           <Route path="/caregiver/alerts" element={<AlertsScreen role="caregiver" />} />
           <Route path="/caregiver/profile" element={<ProfileScreen role="caregiver" />} />
           <Route path="/caregiver/settings" element={<SettingsScreen role="caregiver" />} />
